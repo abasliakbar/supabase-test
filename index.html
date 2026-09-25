@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f7f3" />
+    <title>Little Bank — Supabase learning demo</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span>Little Bank</span></div>
+        <span class="eyebrow">Supabase learning demo</span>
+      </header>
+
+      <section class="intro">
+        <div class="eyebrow">Your first row-secured app</div>
+        <h1>A little balance.<br />A lot of learning.</h1>
+        <p>Create an account, sign in, and experiment with a balance stored in Supabase. Row Level Security should keep each account's row private.</p>
+      </section>
+
+      <div class="layout">
+        <section id="auth-card" class="card auth-card" aria-labelledby="auth-title">
+          <div class="eyebrow">Get started</div>
+          <h2 id="auth-title">Welcome to your demo bank</h2>
+          <div class="tab-list" role="tablist" aria-label="Account action">
+            <button id="login-tab" class="tab" type="button" role="tab" aria-selected="true" aria-controls="auth-form">Log in</button>
+            <button id="signup-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="auth-form">Sign up</button>
+          </div>
+          <form id="auth-form">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" required />
+            </div>
+            <button id="auth-submit" class="primary wide" type="submit">Log in</button>
+          </form>
+          <p id="auth-message" class="notice" role="status" aria-live="polite"></p>
+          <p class="footer-note">This is a learning demo only. Balances are fictional and are not real money.</p>
+        </section>
+
+        <section id="dashboard" class="card dashboard" aria-labelledby="dashboard-title" aria-live="polite">
+          <div class="user-row">
+            <div>
+              <div class="eyebrow">Signed in as</div>
+              <div id="user-email" class="user-email"></div>
+            </div>
+            <button id="logout-button" class="secondary" type="button">Log out</button>
+          </div>
+          <h2 id="dashboard-title" style="margin-top: 22px">Your balance</h2>
+          <p class="balance-label">Available in your private demo row</p>
+          <p id="balance" class="balance">— <span class="unit">units</span></p>
+          <form id="balance-form" class="balance-form">
+            <div class="field">
+              <label for="amount">Amount to change</label>
+              <input id="amount" name="amount" type="number" min="0.01" step="0.01" value="10" inputmode="decimal" required />
+            </div>
+          </form>
+          <div class="balance-actions">
+            <button id="add-button" class="primary" type="button">Add units</button>
+            <button id="subtract-button" class="secondary" type="button">Subtract units</button>
+          </div>
+          <p id="dashboard-message" class="notice" role="status" aria-live="polite"></p>
+        </section>
+
+        <aside class="card side-card">
+          <div class="eyebrow">What happens next</div>
+          <h2>Learn by trying it</h2>
+          <div class="steps">
+            <div class="step"><span class="step-number">1</span><div><strong>Sign up or log in</strong><span>Supabase Auth manages your account and browser session.</span></div></div>
+            <div class="step"><span class="step-number">2</span><div><strong>Load your bank row</strong><span>The app filters by your user ID; RLS must enforce that boundary on the database.</span></div></div>
+            <div class="step"><span class="step-number">3</span><div><strong>Change the demo balance</strong><span>Try adding or subtracting units, then log out and back in.</span></div></div>
+          </div>
+          <details>
+            <summary>Set up the bank table policies</summary>
+            <p>Run this in the Supabase SQL Editor. It enables RLS and lets authenticated users access only rows whose <code>user_id</code> matches their session.</p>
+            <pre><code>alter table public.bank enable row level security;
+
+drop policy if exists "Users can view own balance" on public.bank;
+drop policy if exists "Users can update own balance" on public.bank;
+drop policy if exists "Users can insert own row" on public.bank;
+
+create policy "Users can view own balance"
+on public.bank for select
+using (auth.uid() = user_id);
+
+create policy "Users can update own balance"
+on public.bank for update
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+create policy "Users can insert own row"
+on public.bank for insert
+with check (auth.uid() = user_id);</code></pre>
+            <p>If you already created any of these policies, drop the existing policy of the same name before creating it again.</p>
+          </details>
+          <details>
+            <summary>Understand the security boundary</summary>
+            <p>To test RLS, sign in as one account and remove the <code>.eq("user_id", user.id)</code> filter from the select in this page. You should still only receive your own row: the browser filter is convenient, but the database policy is the security boundary.</p>
+            <p>The anon key is meant to be used by browser apps; RLS is what limits its database access. Never put a <code>service_role</code> key in this page: it bypasses RLS.</p>
+            <p>The session is persisted by Supabase Auth in this browser. For a stronger guarantee of one bank row per account, also enforce a unique constraint on <code>bank.user_id</code> in the database.</p>
+          </details>
+        </aside>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
