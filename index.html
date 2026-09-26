@@ -3,27 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f5f7f3" />
+    <meta name="theme-color" content="#f7f8f6" />
     <title>Little Bank — Supabase learning demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <main class="page">
       <header class="topbar">
-        <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span>Little Bank</span></div>
-        <span class="eyebrow">Supabase learning demo</span>
+        <a class="brand" href="./" aria-label="Little Bank home"><span class="brand-mark" aria-hidden="true">↗</span><span>little bank</span></a>
+        <span class="topbar-note">A Supabase learning demo</span>
       </header>
 
       <section class="intro">
         <div class="eyebrow">Your first row-secured app</div>
-        <h1>A little balance.<br />A lot of learning.</h1>
-        <p>Create an account, sign in, and experiment with a balance stored in Supabase. Row Level Security should keep each account's row private.</p>
+        <h1>Your money, your row.</h1>
+        <p>Sign in and explore how Supabase Auth and Row Level Security work together.</p>
       </section>
 
       <div class="layout">
         <section id="auth-card" class="card auth-card" aria-labelledby="auth-title">
-          <div class="eyebrow">Get started</div>
-          <h2 id="auth-title">Welcome to your demo bank</h2>
+          <div class="section-heading">
+            <div><div class="eyebrow">Account</div><h2 id="auth-title">Welcome back</h2></div>
+            <span class="secure-label"><span aria-hidden="true">●</span> RLS protected</span>
+          </div>
           <div class="tab-list" role="tablist" aria-label="Account action">
             <button id="login-tab" class="tab" type="button" role="tab" aria-selected="true" aria-controls="auth-form">Log in</button>
             <button id="signup-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="auth-form">Sign up</button>
@@ -40,7 +45,7 @@
             <button id="auth-submit" class="primary wide" type="submit">Log in</button>
           </form>
           <p id="auth-message" class="notice" role="status" aria-live="polite"></p>
-          <p class="footer-note">This is a learning demo only. Balances are fictional and are not real money.</p>
+          <p class="footer-note">Learning demo only · no real money</p>
         </section>
 
         <section id="dashboard" class="card dashboard" aria-labelledby="dashboard-title" aria-live="polite">
@@ -51,8 +56,8 @@
             </div>
             <button id="logout-button" class="secondary" type="button">Log out</button>
           </div>
-          <h2 id="dashboard-title" style="margin-top: 22px">Your balance</h2>
-          <p class="balance-label">Available in your private demo row</p>
+          <h2 id="dashboard-title" class="dashboard-title">Your balance</h2>
+          <p class="balance-label">Private demo account</p>
           <p id="balance" class="balance">— <span class="unit">units</span></p>
           <form id="balance-form" class="balance-form">
             <div class="field">
@@ -68,12 +73,12 @@
         </section>
 
         <aside class="card side-card">
-          <div class="eyebrow">What happens next</div>
-          <h2>Learn by trying it</h2>
+          <div class="eyebrow">Quick guide</div>
+          <h2>How it works</h2>
           <div class="steps">
-            <div class="step"><span class="step-number">1</span><div><strong>Sign up or log in</strong><span>Supabase Auth manages your account and browser session.</span></div></div>
-            <div class="step"><span class="step-number">2</span><div><strong>Load your bank row</strong><span>The app filters by your user ID; RLS must enforce that boundary on the database.</span></div></div>
-            <div class="step"><span class="step-number">3</span><div><strong>Change the demo balance</strong><span>Try adding or subtracting units, then log out and back in.</span></div></div>
+            <div class="step"><span class="step-number">1</span><div><strong>Authenticate</strong><span>Supabase keeps your sign-in session.</span></div></div>
+            <div class="step"><span class="step-number">2</span><div><strong>Load your row</strong><span>RLS restricts access to your user ID.</span></div></div>
+            <div class="step"><span class="step-number">3</span><div><strong>Try an update</strong><span>Change your demo balance below.</span></div></div>
           </div>
           <details>
             <summary>Set up the bank table policies</summary>

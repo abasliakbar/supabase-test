@@ -1,7 +1,4 @@
-      const SUPABASE_URL = "https://htxzvxyzjajfrwcfbrgu.supabase.co";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0eHp2eHl6amFqZnJ3Y2Zicmd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzNTQwNDEsImV4cCI6MjEwNTkzMDA0MX0.E2kkPd4XCxfWNr1Eid12cnyNJcwYg3q75L-RWb94a_g";
-      const { createClient } = window.supabase;
-      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      let supabaseClient;
       const elements = {
         authCard: document.querySelector("#auth-card"),
         authForm: document.querySelector("#auth-form"),
@@ -55,6 +52,7 @@
         const signingUp = mode === "signup";
         elements.loginTab.setAttribute("aria-selected", String(!signingUp));
         elements.signupTab.setAttribute("aria-selected", String(signingUp));
+        document.querySelector("#auth-title").textContent = signingUp ? "Create your account" : "Welcome back";
         elements.authSubmit.textContent = signingUp ? "Create account" : "Log in";
         document.querySelector("#password").autocomplete = signingUp ? "new-password" : "current-password";
         setMessage(elements.authMessage, "");
@@ -116,6 +114,10 @@
       elements.authForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (busy) return;
+        if (!supabaseClient) {
+          setMessage(elements.authMessage, "Supabase is still loading. Wait a moment and try again.", "error");
+          return;
+        }
         setBusy(true);
         setMessage(elements.authMessage, "");
         const form = new FormData(elements.authForm);
@@ -192,15 +194,27 @@
       elements.addButton.addEventListener("click", () => void changeBalance(1));
       elements.subtractButton.addEventListener("click", () => void changeBalance(-1));
 
-      supabaseClient.auth.onAuthStateChange((_event, session) => {
-        setTimeout(() => applySession(session), 0);
-      });
-      supabaseClient.auth.getSession().then(({ data, error }) => {
-        if (error) {
-          setMessage(elements.authMessage, `Could not restore your session: ${error.message}`, "error");
-          return;
+      async function initializeSupabase() {
+        try {
+          const response = await fetch("/api/config", { cache: "no-store" });
+          const config = await response.json();
+          if (!response.ok) throw new Error(config.error || "The local server could not load Supabase configuration.");
+          if (!config.url || !config.anonKey) throw new Error("Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.");
+
+          supabaseClient = window.supabase.createClient(config.url, config.anonKey);
+          supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === "INITIAL_SESSION") return;
+            setTimeout(() => applySession(session), 0);
+          });
+          const { data, error } = await supabaseClient.auth.getSession();
+          if (error) {
+            setMessage(elements.authMessage, `Could not restore your session: ${error.message}`, "error");
+            return;
+          }
+          applySession(data.session);
+        } catch (error) {
+          setMessage(elements.authMessage, `${error.message} Start the app with npm start.`, "error");
         }
-        applySession(data.session);
-      }).catch((error) => {
-        setMessage(elements.authMessage, `Could not restore your session: ${error.message}`, "error");
-      });
+      }
+
+      initializeSupabase();
