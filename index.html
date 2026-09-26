@@ -3,52 +3,129 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f8f6" />
+    <meta name="theme-color" content="#0d0e26" />
     <title>Little Bank — Supabase learning demo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <!-- Ambient vibrant gradient background with floating visual depth blobs -->
+    <div class="ambient-bg" aria-hidden="true">
+      <div class="glow-orb orb-1"></div>
+      <div class="glow-orb orb-2"></div>
+      <div class="glow-orb orb-3"></div>
+      <div class="glow-orb orb-4"></div>
+      <div class="bg-grid-mesh"></div>
+    </div>
+
     <main class="page">
       <header class="topbar">
-        <a class="brand" href="./" aria-label="Little Bank home"><span class="brand-mark" aria-hidden="true">↗</span><span>little bank</span></a>
-        <span class="topbar-note">A Supabase learning demo</span>
+        <a class="brand" href="./" aria-label="Little Bank home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg class="brand-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L3 7V12C3 17.52 6.84 22.74 12 24C17.16 22.74 21 17.52 21 12V7L12 2Z" fill="url(#brand-grad)" />
+              <path d="M12 6L6 9.33V12.67C6 16.35 8.56 19.83 12 20.67C15.44 19.83 18 16.35 18 12.67V9.33L12 6Z" fill="rgba(255,255,255,0.25)" />
+              <path d="M10 12L12 14L15 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <defs>
+                <linearGradient id="brand-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#38bdf8" />
+                  <stop offset="0.5" stop-color="#6366f1" />
+                  <stop offset="1" stop-color="#a855f7" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <div class="brand-text-wrap">
+            <span class="brand-title">LITTLE BANK</span>
+            <span class="brand-sub">Fintech Platform</span>
+          </div>
+        </a>
+        <div class="topbar-status">
+          <span class="status-indicator"></span>
+          <span class="topbar-note">Supabase Learning Demo</span>
+        </div>
       </header>
 
       <section class="intro">
-        <div class="eyebrow">Your first row-secured app</div>
-        <h1>Your money, your row.</h1>
-        <p>Sign in and explore how Supabase Auth and Row Level Security work together.</p>
+        <div class="eyebrow-badge">
+          <span class="badge-icon">⚡</span>
+          <span>Your first row-secured app</span>
+        </div>
+        <h1>Your money, <span class="gradient-text">your row.</span></h1>
+        <p>Sign in and explore how Supabase Auth and Row Level Security work together seamlessly.</p>
       </section>
 
       <div class="layout">
+        <!-- Main Glassmorphism Authentication Card -->
         <section id="auth-card" class="card auth-card" aria-labelledby="auth-title">
+          <div class="card-glass-glow" aria-hidden="true"></div>
           <div class="section-heading">
-            <div><div class="eyebrow">Account</div><h2 id="auth-title">Welcome back</h2></div>
-            <span class="secure-label"><span aria-hidden="true">●</span> RLS protected</span>
+            <div>
+              <div class="eyebrow">Account Access</div>
+              <h2 id="auth-title">Welcome back</h2>
+            </div>
+            <span class="secure-label">
+              <span class="pulse-indicator" aria-hidden="true"></span>
+              RLS protected
+            </span>
           </div>
+
           <div class="tab-list" role="tablist" aria-label="Account action">
             <button id="login-tab" class="tab" type="button" role="tab" aria-selected="true" aria-controls="auth-form">Log in</button>
             <button id="signup-tab" class="tab" type="button" role="tab" aria-selected="false" aria-controls="auth-form">Sign up</button>
           </div>
+
           <form id="auth-form">
             <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" required />
+              <label for="email">
+                <span>Email address</span>
+              </label>
+              <div class="input-container">
+                <span class="input-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </span>
+                <input id="email" name="email" type="email" placeholder="name@company.com" autocomplete="email" required />
+              </div>
             </div>
+
             <div class="field">
-              <label for="password">Password</label>
-              <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" required />
+              <label for="password">
+                <span>Password</span>
+              </label>
+              <div class="input-container">
+                <span class="input-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </span>
+                <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" minlength="6" required />
+              </div>
             </div>
+
             <button id="auth-submit" class="primary wide" type="submit">Log in</button>
           </form>
+
           <p id="auth-message" class="notice" role="status" aria-live="polite"></p>
-          <p class="footer-note">Learning demo only · no real money</p>
+          
+          <div class="card-footer">
+            <div class="security-chip">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+              </svg>
+              <span>Learning demo only · No real currency</span>
+            </div>
+          </div>
         </section>
 
+        <!-- Authenticated Dashboard Card -->
         <section id="dashboard" class="card dashboard" aria-labelledby="dashboard-title" aria-live="polite">
+          <div class="card-glass-glow" aria-hidden="true"></div>
           <div class="user-row">
             <div>
               <div class="eyebrow">Signed in as</div>
@@ -57,28 +134,61 @@
             <button id="logout-button" class="secondary" type="button">Log out</button>
           </div>
           <h2 id="dashboard-title" class="dashboard-title">Your balance</h2>
-          <p class="balance-label">Private demo account</p>
+          <p class="balance-label">Private demo account balance</p>
           <p id="balance" class="balance">— <span class="unit">units</span></p>
           <form id="balance-form" class="balance-form">
             <div class="field">
               <label for="amount">Amount to change</label>
-              <input id="amount" name="amount" type="number" min="0.01" step="0.01" value="10" inputmode="decimal" required />
+              <div class="input-container">
+                <span class="input-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                    <path d="M12 18V6"/>
+                  </svg>
+                </span>
+                <input id="amount" name="amount" type="number" min="0.01" step="0.01" value="10" inputmode="decimal" required />
+              </div>
             </div>
           </form>
           <div class="balance-actions">
-            <button id="add-button" class="primary" type="button">Add units</button>
-            <button id="subtract-button" class="secondary" type="button">Subtract units</button>
+            <button id="add-button" class="primary" type="button">
+              <span>+ Add units</span>
+            </button>
+            <button id="subtract-button" class="secondary" type="button">
+              <span>− Subtract units</span>
+            </button>
           </div>
           <p id="dashboard-message" class="notice" role="status" aria-live="polite"></p>
         </section>
 
+        <!-- Informational Side Card -->
         <aside class="card side-card">
-          <div class="eyebrow">Quick guide</div>
+          <div class="card-glass-glow" aria-hidden="true"></div>
+          <div class="eyebrow">Architecture Guide</div>
           <h2>How it works</h2>
           <div class="steps">
-            <div class="step"><span class="step-number">1</span><div><strong>Authenticate</strong><span>Supabase keeps your sign-in session.</span></div></div>
-            <div class="step"><span class="step-number">2</span><div><strong>Load your row</strong><span>RLS restricts access to your user ID.</span></div></div>
-            <div class="step"><span class="step-number">3</span><div><strong>Try an update</strong><span>Change your demo balance below.</span></div></div>
+            <div class="step">
+              <span class="step-number">1</span>
+              <div>
+                <strong>Authenticate</strong>
+                <span>Supabase securely maintains your sign-in session.</span>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div>
+                <strong>Load your row</strong>
+                <span>RLS strictly restricts database access to your user ID.</span>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div>
+                <strong>Try an update</strong>
+                <span>Safely mutate your demo account balance in real time.</span>
+              </div>
+            </div>
           </div>
           <details>
             <summary>Set up the bank table policies</summary>
